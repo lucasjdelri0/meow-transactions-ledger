@@ -1,5 +1,12 @@
 import { ReactNode } from 'react'
-import { AppRoutes } from 'utils/routes'
+
+export interface Route {
+  path: string
+  title: string
+  icon: ReactNode
+}
+
+export type AppRoutes = Route[]
 
 export interface HeaderProps {
   backgroundColor?: string
