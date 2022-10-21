@@ -1,4 +1,4 @@
-import { Button, Typography } from 'antd'
+import { Typography } from 'antd'
 import Primary from './layout/Primary'
 import Page from './components/Page'
 import './App.css'
