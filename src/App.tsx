@@ -1,25 +1,26 @@
-import logo from './logo.svg'
+import { Typography } from 'antd'
+import Primary from './layout/Primary'
+import Page from './components/Page'
 import './App.css'
 
-const App = (): JSX.Element => {
-  return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  )
-}
+const { Title, Paragraph } = Typography
+const App = (): JSX.Element => (
+  <Primary>
+    <Page>
+      <Title level={2}>Meow Challenge</Title>
+      <Paragraph>
+        This solution is intended to solve the frontend challenge proposed by
+        Meow.
+      </Paragraph>
+      <Paragraph>
+        You will be able to keep track of your financial categories, check their
+        balances, and even transfer money between them.
+      </Paragraph>
+      <div>
+        <img alt='meow' src='images/meow.png' style={{ width: 300 }} />
+      </div>
+    </Page>
+  </Primary>
+)
 
 export default App
