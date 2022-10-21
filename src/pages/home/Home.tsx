@@ -2,7 +2,6 @@ import { useState } from 'react'
 import {
   Avatar,
   Button,
-  Drawer,
   Dropdown,
   Input,
   List,
@@ -11,7 +10,7 @@ import {
   Modal,
   Typography,
 } from 'antd'
-import { DownOutlined, PlusOutlined, SwapOutlined } from '@ant-design/icons'
+import { DownOutlined, SwapOutlined } from '@ant-design/icons'
 import Page from 'components/Page'
 import { useTransactionsContext } from 'providers/TransactionsProvider'
 import './Home.css'
@@ -19,9 +18,9 @@ import './Home.css'
 const { Title, Text, Paragraph } = Typography
 
 export const Home = (): JSX.Element => {
+  const [amount, setAmount] = useState('0')
   const [fromLabel, setFromLabel] = useState('From')
   const [toLabel, setToLabel] = useState('To')
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const { categories } = useTransactionsContext()
@@ -40,12 +39,8 @@ export const Home = (): JSX.Element => {
     return total
   }, 0)
 
-  const showDrawer = (): void => {
-    setIsDrawerOpen(true)
-  }
-
-  const closeDrawer = (): void => {
-    setIsDrawerOpen(false)
+  const handleChange = (value: string): void => {
+    setAmount(value)
   }
 
   const showModal = (): void => {
@@ -53,6 +48,17 @@ export const Home = (): JSX.Element => {
   }
 
   const handleTransfer = (): void => {
+    const categoryFrom = categories.find(({ title }) => title === fromLabel)
+    const categoryTo = categories.find(({ title }) => title === toLabel)
+    if (categoryFrom && categoryTo) {
+      categoryFrom.balance -= parseInt(amount)
+      categoryTo.balance += parseInt(amount)
+      const otherCategories = categories.filter(
+        ({ title }) => title !== fromLabel && title !== toLabel
+      )
+      const updatedCategories = [...otherCategories, categoryFrom, categoryTo]
+      localStorage.setItem('categories', JSON.stringify(updatedCategories))
+    }
     setIsModalOpen(false)
   }
 
@@ -80,24 +86,19 @@ export const Home = (): JSX.Element => {
 
   return (
     <Page>
-      <Title level={2}>Meow Challenge</Title>
-      <Paragraph>
-        This solution is intended to solve the frontend challenge proposed by
-        Meow.
+      <Title level={2}>My Accounts</Title>
+      <Paragraph style={{ textAlign: 'justify' }}>
+        Check your accounts, keep track of their balance, and transfer money
+        between them.
       </Paragraph>
-      <Title level={3}>{`Total Balance: $${totalBalance}`}</Title>
+      <Title
+        level={4}
+      >{`Total Balance: $ ${totalBalance.toLocaleString()}`}</Title>
       <List
         dataSource={sorted}
         bordered
         renderItem={({ id, title, balance }) => (
-          <List.Item
-            key={id}
-            actions={[
-              <a onClick={showDrawer} key={`a-${id}`}>
-                View Detail
-              </a>,
-            ]}
-          >
+          <List.Item key={id}>
             <List.Item.Meta
               avatar={
                 <Avatar src='https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png' />
@@ -109,19 +110,14 @@ export const Home = (): JSX.Element => {
         )}
         style={{ width: '100%' }}
       />
-      <div style={{ marginTop: '8px' }}>
-        <Button
-          type='primary'
-          icon={<SwapOutlined />}
-          onClick={showModal}
-          style={{ margin: 8 }}
-        >
-          Transfer
-        </Button>
-        <Button type='primary' icon={<PlusOutlined />} style={{ margin: 8 }}>
-          Add Category
-        </Button>
-      </div>
+      <Button
+        type='primary'
+        icon={<SwapOutlined />}
+        onClick={showModal}
+        style={{ marginTop: '16px', padding: '0 32px' }}
+      >
+        Transfer
+      </Button>
       <Modal
         title='Transfer Funds'
         open={isModalOpen}
@@ -141,18 +137,14 @@ export const Home = (): JSX.Element => {
         </div>
         <div style={{ marginTop: '16px' }}>
           <Text style={{ marginRight: '8px' }}>Amount</Text>
-          <Input suffix='USD' style={{ maxWidth: '150px' }} />
+          <Input
+            suffix='USD'
+            style={{ maxWidth: '150px' }}
+            value={amount}
+            onChange={(e) => handleChange(e.target.value)}
+          />
         </div>
       </Modal>
-      <Drawer
-        width={640}
-        placement='right'
-        closable={false}
-        onClose={closeDrawer}
-        open={isDrawerOpen}
-      >
-        Holis
-      </Drawer>
     </Page>
   )
 }
