@@ -6,29 +6,35 @@ import './Header.css'
 const { Header: AntHeader } = Layout
 const { Link: AntLink } = Typography
 
-export const Header = (props: HeaderProps): JSX.Element => (
-  <AntHeader
-    className='headerContainer'
-    style={{ backgroundColor: props.backgroundColor }}
-  >
-    {props.repoHref && (
-      <AntLink href={props.repoHref} target='_blank' className='ghLink'>
+export const Header = ({
+  avatarImageSrc,
+  backgroundColor,
+  repoHref,
+  routes,
+  selectedKeys,
+  tabColor,
+  badgeCount,
+  badgeIcon,
+}: HeaderProps): JSX.Element => (
+  <AntHeader className='headerContainer' style={{ backgroundColor }}>
+    {repoHref && (
+      <AntLink href={repoHref} target='_blank' className='ghLink'>
         <GithubOutlined className='headerLogo' />
       </AntLink>
     )}
 
-    {props.routes && (
+    {routes && (
       <Menu
         mode='horizontal'
-        selectedKeys={props.selectedKeys}
+        selectedKeys={selectedKeys}
         className='routesMenu'
         style={{
-          backgroundColor: props.backgroundColor,
+          backgroundColor,
         }}
       >
-        {props.routes.map(({ path, title }) => (
+        {routes.map(({ path, title }) => (
           <Menu.Item key={path}>
-            <AntLink href={path} style={{ color: props.tabColor }}>
+            <AntLink href={path} style={{ color: tabColor }}>
               {title}
             </AntLink>
           </Menu.Item>
@@ -37,17 +43,12 @@ export const Header = (props: HeaderProps): JSX.Element => (
     )}
 
     <Space align='center'>
-      {props.badgeIcon && (
-        <Badge count={props.badgeCount}>
-          <Button
-            icon={props.badgeIcon}
-            shape='circle'
-            size='small'
-            type='link'
-          />
+      {badgeIcon && (
+        <Badge count={badgeCount}>
+          <Button icon={badgeIcon} shape='circle' size='small' type='link' />
         </Badge>
       )}
-      {props.avatarImageSrc && <Avatar src={props.avatarImageSrc} />}
+      {avatarImageSrc && <Avatar src={avatarImageSrc} />}
     </Space>
   </AntHeader>
 )
