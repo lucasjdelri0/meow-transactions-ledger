@@ -13,13 +13,11 @@ const App = (): JSX.Element => (
         Meow.
       </Paragraph>
       <Paragraph>
-        You will be able to see your financial categories, keep track of their
-        balance, and even transfer money between them.
+        You will be able to keep track of your financial categories, check their
+        balances, and even transfer money between them.
       </Paragraph>
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 16 }}>
-        <Button type='primary' onClick={() => console.log('pressed')}>
-          Transfer
-        </Button>
+      <div>
+        <img alt='meow' src='images/meow.png' style={{ width: 300 }} />
       </div>
     </Page>
   </Primary>
