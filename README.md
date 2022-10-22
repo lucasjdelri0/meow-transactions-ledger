@@ -1,6 +1,24 @@
-# Getting Started with Create React App
+# Meow Challenge
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is intended to solve the frontend challenge proposed by Meow.
+
+The project was created with [Create React App](https://github.com/facebook/create-react-app) by [Lucas Del Rio](https://github.com/lucasjdelri0).
+
+## Solution
+
+### Features
+
+Basically, you will be able to check your categories (accounts), keep track of their balance, and transfer money between them.
+
+Main Features:
+
+- List all categories sorted by their balance in descending order
+- Transfer money from one category to another
+- Keep track of the transactions history in each category
+
+> NOTES:
+>
+> Some categories and transactions were hardcoded in order to have a starting point for the application. You will find them in the `categories.tsx` file.
 
 ## Available Scripts
 
@@ -11,36 +29,36 @@ In the project directory, you can run:
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
 ### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in the interactive watch mode.
 
-### `yarn build`
+### `yarn lint`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Instructs ESLint to identify and try to fix as many issues as possible in .js, .jsx, .ts, and .tsx files.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `yarn format:check`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Check if your files are formatted to the intended Prettier config, and get a list of the unformatted files, if any.
 
-### `yarn eject`
+### `yarn format:write`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Format all your files to the intended Prettier config.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+> NOTES:
+>
+> Use .eslintignore and .prettierignore to ignore files that should not be analyzed and/or formatted
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Vercel Deployment
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+You can access a production deployment in [Vercel](https://meow-transactions-ledger.vercel.app/) for a quick testing.
 
-## Learn More
+## Resources
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+[AntDesing Docs](https://ant.design/docs/react/introduce)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+[AntDesing Components](https://ant.design/components/overview/)
+
+[ESLint Rules](https://eslint.org/docs/latest/rules/)
+
+[Prettier Options](https://prettier.io/docs/en/options.html)
