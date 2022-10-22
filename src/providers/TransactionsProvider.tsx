@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect } from 'react'
+import { createContext, ReactNode, useContext, useState } from 'react'
 import {
   Category,
   Transaction,
@@ -9,49 +9,42 @@ import {
 interface TransactionsContextType {
   categories: Category[]
   transactions: Transaction[]
+  setCategories: (categories: Category[]) => void
+  setTransactions: (transactions: Transaction[]) => void
+}
+
+const getLocalCategories = (): Category[] => {
+  const localData = localStorage.getItem('categories')
+  return localData ? (JSON.parse(localData) as Category[]) : initialCategories
+}
+
+const getLocalTransactions = (): Transaction[] => {
+  const localData = localStorage.getItem('transactions')
+  return localData
+    ? (JSON.parse(localData) as Transaction[])
+    : initialTransactions
 }
 
 const TransactionsContext = createContext<TransactionsContextType>({
-  categories: initialCategories,
-  transactions: initialTransactions,
+  categories: getLocalCategories(),
+  transactions: getLocalTransactions(),
+  setCategories: () => {},
+  setTransactions: () => {},
 })
 
 interface ProviderProps {
   children?: ReactNode
 }
 
-const getLocalCategories = (): Category[] => {
-  const localData = localStorage.getItem('categories')
-  return localData ? (JSON.parse(localData) as Category[]) : []
-}
-
-const getLocalTransactions = (): Transaction[] => {
-  const localData = localStorage.getItem('transactions')
-  return localData ? (JSON.parse(localData) as Transaction[]) : []
-}
-
 const TransactionsProvider = ({ children }: ProviderProps): JSX.Element => {
-  const categories = getLocalCategories()
-  const transactions = getLocalTransactions()
-
-  useEffect(() => {
-    localStorage.setItem('categories', JSON.stringify(initialCategories))
-    localStorage.setItem('transactions', JSON.stringify(initialTransactions))
-  }, [])
-
-  // useEffect(() => {
-  //   localStorage.setItem('categories', JSON.stringify(categories))
-  //   // setCategories(categories)
-  // }, [categories])
-
-  // useEffect(() => {
-  //   localStorage.setItem('transactions', JSON.stringify(transactions))
-  //   // setTransactions(transactions)
-  // }, [transactions])
+  const [categories, setCategories] = useState(getLocalCategories)
+  const [transactions, setTransactions] = useState(getLocalTransactions)
 
   const value = {
     categories,
     transactions,
+    setTransactions,
+    setCategories,
   }
   return (
     <TransactionsContext.Provider value={value}>
