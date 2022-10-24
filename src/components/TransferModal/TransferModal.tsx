@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Dropdown, Input, Modal, Typography } from 'antd'
 import { DownOutlined, SwapOutlined } from '@ant-design/icons'
+import { useTransactionsContext } from 'providers/TransactionsProvider'
 import { TransferModalProps } from './TransferModal.props'
 
 const { Text } = Typography
@@ -8,6 +9,7 @@ const { Text } = Typography
 export const TransferModal = ({
   open,
   fromLabel,
+  fromCategory,
   fromMenu,
   toLabel,
   toMenu,
@@ -15,7 +17,10 @@ export const TransferModal = ({
   onTransfer,
   onCancel,
 }: TransferModalProps): JSX.Element => {
-  const [amount, setAmount] = useState('0')
+  const [amount, setAmount] = useState('')
+
+  const isOverBalance = parseInt(amount) > fromCategory.balance
+  const isNegative = parseInt(amount) < 1
 
   const handleChange = (value: string): void => {
     setAmount(value)
@@ -28,7 +33,9 @@ export const TransferModal = ({
       onOk={() => onTransfer(amount)}
       onCancel={onCancel}
       style={{ alignItems: 'center' }}
-      okButtonProps={{ disabled }}
+      okButtonProps={{
+        disabled: disabled || isOverBalance || isNegative,
+      }}
     >
       <p>Transfer money between your accounts</p>
       <div>
@@ -43,12 +50,22 @@ export const TransferModal = ({
       <div style={{ marginTop: '16px' }}>
         <Text style={{ marginRight: '8px' }}>Amount</Text>
         <Input
-          suffix='USD'
-          style={{ maxWidth: '150px' }}
+          type='number'
           value={amount}
+          placeholder='$500'
+          suffix='USD'
           onChange={(e) => handleChange(e.target.value)}
+          required
+          status={isOverBalance || isNegative ? 'error' : ''}
         />
       </div>
+      {fromCategory.balance > 0 && (
+        <Text
+          strong
+          italic
+          style={{ marginRight: '8px', marginTop: '8px', fontSize: 12 }}
+        >{`${fromCategory.title}: $${fromCategory.balance}`}</Text>
+      )}
     </Modal>
   )
 }
