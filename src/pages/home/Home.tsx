@@ -15,6 +15,11 @@ export const Home = (): JSX.Element => {
   const [activeAccount, setActiveAccount] = useState<Category>()
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [fromLabel, setFromLabel] = useState('From')
+  const [fromCategory, setFromCategory] = useState<Category>({
+    id: -1,
+    title: 'From',
+    balance: -1,
+  })
   const [toLabel, setToLabel] = useState('To')
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -84,7 +89,10 @@ export const Home = (): JSX.Element => {
 
   const handleFromSelect: MenuProps['onClick'] = ({ key }) => {
     const selected = categories.find(({ id }) => id === parseInt(key))
-    if (selected) setFromLabel(selected.title)
+    if (selected) {
+      setFromLabel(selected.title)
+      setFromCategory(selected)
+    }
   }
 
   const handleToSelect: MenuProps['onClick'] = ({ key }) => {
@@ -130,6 +138,7 @@ export const Home = (): JSX.Element => {
       <TransferModal
         open={isModalOpen}
         fromLabel={fromLabel}
+        fromCategory={fromCategory}
         fromMenu={fromMenu}
         toLabel={toLabel}
         toMenu={toMenu}
